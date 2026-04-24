@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from 'react'
-import { MemoEditor } from './components/MemoEditor'
-import { MemoList } from './components/MemoList'
-import { useMemos } from './hooks/useMemos'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { BookForm } from './reading/components/BookForm'
+import { ReadingListPanel } from './reading/components/ReadingListPanel'
+import { useBooks } from './reading/hooks/useBooks'
+import { filterBooks, type BookFilterValue } from './reading/lib/filterBooks'
 
 const NARROW_MAX = 640
 
@@ -26,22 +27,31 @@ function useNarrowView() {
 }
 
 export default function App() {
-  const { memos, addMemo, updateMemo, removeMemo } = useMemos()
+  const { books, loadCorruption, addBook, updateBook, removeBook, clearLoadCorruption } =
+    useBooks()
+  const [filter, setFilter] = useState<BookFilterValue>('all')
+  const [search, setSearch] = useState('')
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [mobilePanel, setMobilePanel] = useState<MobilePanel>('list')
   const isNarrow = useNarrowView()
 
-  const selectedMemo = selectedId
-    ? memos.find((m) => m.id === selectedId) ?? null
-    : null
+  const visibleBooks = useMemo(
+    () => filterBooks(books, filter, search),
+    [books, filter, search],
+  )
+
+  const selectedBook = useMemo(
+    () => (selectedId ? (books.find((b) => b.id === selectedId) ?? null) : null),
+    [books, selectedId],
+  )
 
   const handleAdd = useCallback(() => {
-    const id = addMemo()
+    const id = addBook()
     setSelectedId(id)
     if (isNarrow) {
       setMobilePanel('edit')
     }
-  }, [addMemo, isNarrow])
+  }, [addBook, isNarrow])
 
   const handleSelect = useCallback(
     (id: string) => {
@@ -55,13 +65,13 @@ export default function App() {
 
   const handleDelete = useCallback(
     (id: string) => {
-      removeMemo(id)
+      removeBook(id)
       setSelectedId((cur) => (cur === id ? null : cur))
       if (isNarrow) {
         setMobilePanel('list')
       }
     },
-    [isNarrow, removeMemo],
+    [isNarrow, removeBook],
   )
 
   const showList = !isNarrow || mobilePanel === 'list'
@@ -77,18 +87,27 @@ export default function App() {
         }
       >
         {showList ? (
-          <MemoList
-            memos={memos}
+          <ReadingListPanel
+            books={books}
+            visibleBooks={visibleBooks}
+            filter={filter}
+            onFilterChange={setFilter}
+            search={search}
+            onSearchChange={setSearch}
             selectedId={selectedId}
             onSelect={handleSelect}
             onAdd={handleAdd}
+            loadCorruption={loadCorruption}
+            onDismissCorruption={clearLoadCorruption}
           />
         ) : null}
         {showEdit ? (
-          <MemoEditor
+          <BookForm
             key={selectedId ?? 'none'}
-            memo={selectedMemo}
-            onChange={updateMemo}
+            book={selectedBook}
+            onPatch={(id, patch) => {
+              updateBook(id, patch)
+            }}
             onDelete={handleDelete}
             showBackButton={isNarrow}
             onRequestBack={isNarrow ? () => setMobilePanel('list') : undefined}

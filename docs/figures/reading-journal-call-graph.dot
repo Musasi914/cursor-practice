@@ -1,0 +1,88 @@
+digraph G {
+  rankdir=TB;
+  node [shape=box, style="rounded,filled", fillcolor=lightgrey, fontname="Helvetica"];
+  graph [fontname="Helvetica", labelloc="t", fontsize=12];
+  edge [fontname="Helvetica", fontsize=10];
+
+  main_tsx [label="createRoot (main.tsx)\n(React 掛 App 起動)"];
+
+  subgraph cluster_app {
+    label="画面ルート (App)";
+    style=filled;
+    fillcolor="#e3f2fd";
+    app [label="App (default)\n(一覧/詳細の出し分け・選択 bookId)"]; 
+    useNarrowView [label="useNarrowView\n(640px 以下の狭幅判定)"]; 
+  }
+
+  subgraph cluster_panel {
+    label="一覧";
+    style=filled;
+    fillcolor="#e8f5e9";
+    readingListPanel [label="ReadingListPanel\n(ヘッダ・帯域・行リスト)"]; 
+    bookFilterBar [label="BookFilterBar\n(状態ラジオ + タイトル検索)"]; 
+    bookListRow [label="BookListRow\n(行クリックで選択)"]; 
+    displayTitle [label="displayTitle (内部)\n(一覧表示用タイトル)"]; 
+    formatDateLine [label="formatDateLine (内部)\n(始/了日の1行)"]; 
+  }
+
+  subgraph cluster_form {
+    label="編集";
+    style=filled;
+    fillcolor="#fff3e0";
+    bookForm [label="BookForm\n(編集 confirm 削除)"]; 
+  }
+
+  subgraph cluster_hook {
+    label="useBooks フック";
+    style=filled;
+    fillcolor="#fce4ec";
+    useBooks [label="useBooks\n(本配列 state)"]; 
+    addBook [label="addBook\n(新規1件)"]; 
+    updateBook [label="updateBook\n(部分更新)"]; 
+    removeBook [label="removeBook\n(削除)"]; 
+  }
+
+  subgraph cluster_lib {
+    label="整形・永続層";
+    style=filled;
+    fillcolor="#f3e5f5";
+    filterBooks [label="filterBooks\n(状態 + 部分一致)"]; 
+    summarizeNotes [label="summarizeNotes\n(感想1行)"]; 
+    loadBooksFromStorage [label="loadBooksFromStorage\n(起動時 JSON 取得)"]; 
+    isValidBook [label="isValidBook (内部)\n(レコード検証)"]; 
+    saveBooksToStorage [label="saveBooksToStorage\n(全件保存)"]; 
+    sortBooksByUpdatedAtDesc [label="sortBooksByUpdatedAtDesc\n(更新日降順)"]; 
+  }
+
+  /* 起動 */
+  main_tsx -> app [label="<App />"];
+  app -> useNarrowView [label="レイアウト"];
+  app -> useBooks [label="useBooks()"];
+
+  /* データ取得・初回 */
+  useBooks -> loadBooksFromStorage [label="初回 state 初期化", color="#c62828"];
+  loadBooksFromStorage -> isValidBook [label="配列各要素", fontsize=10];
+
+  /* 返却 API と内部処理 */
+  useBooks -> addBook [label="返却 (コールバック)", style=dashed, fontsize=9];
+  useBooks -> updateBook [label="返却 (コールバック)", style=dashed, fontsize=9];
+  useBooks -> removeBook [label="返却 (コールバック)", style=dashed, fontsize=9];
+  addBook -> sortBooksByUpdatedAtDesc [label="追加直後", fontsize=10];
+  updateBook -> sortBooksByUpdatedAtDesc [label="更新直後", fontsize=10];
+  useBooks -> saveBooksToStorage [label="useEffect(150ms デバウンス)\nbooks 変更時", color="#2e7d32"];
+
+  /* 画面からの操作 */
+  app -> addBook [label="handleAdd", color="#1565c0"];
+  app -> updateBook [label="BookForm onPatch 経路", color="#1565c0"];
+  app -> removeBook [label="handleDelete", color="#1565c0"];
+  app -> filterBooks [label="useMemo(表示用)"]; 
+  app -> readingListPanel [label="Props"];
+  app -> bookForm [label="Props"];
+
+  readingListPanel -> bookFilterBar [label="フィルタ/検索"];
+  readingListPanel -> bookListRow [label="行描画"];
+  bookListRow -> displayTitle [label="title"];
+  bookListRow -> formatDateLine [label="日付", fontsize=10];
+  bookListRow -> summarizeNotes [label="notes (感想)"];
+}
+
