@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { Book, BookStatus } from '../types/book'
 import {
   loadBooksFromStorage,
@@ -17,11 +17,15 @@ type UpdateBookInput = {
 }
 
 export function useBooks() {
-  const initial = loadBooksFromStorage()
+  /** 起動 1 回だけ localStorage を読む（再レンダーではキャッシュを返す） */
+  const initialLoad = useMemo(() => loadBooksFromStorage(), [])
+
   const [books, setBooks] = useState<Book[]>(() =>
-    sortBooksByUpdatedAtDesc(initial.books),
+    sortBooksByUpdatedAtDesc(initialLoad.books),
   )
-  const [loadCorruption, setLoadCorruption] = useState(initial.hadCorruption)
+  const [loadCorruption, setLoadCorruption] = useState(
+    () => initialLoad.hadCorruption,
+  )
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
