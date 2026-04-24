@@ -1,0 +1,59 @@
+digraph G {
+  rankdir=TB;
+  node [shape=box, style="rounded,filled", fillcolor=lightgrey, fontname="Helvetica"];
+
+  subgraph cluster_ui {
+    label="MemoList（一覧）";
+    labelloc=t;
+    fontsize=11;
+    style=filled;
+    fillcolor="#eef6fc";
+    node [style="rounded,filled", fillcolor="#9ec5e8"];
+
+    memoList [label="MemoList\n(「新規」クリックで onAdd 実行)"];
+  }
+
+  subgraph cluster_app {
+    label="App（新規直後の UI 状態）";
+    labelloc=t;
+    fontsize=11;
+    style=filled;
+    fillcolor="#fff8e8";
+    node [style="rounded,filled", fillcolor="#e8c36a"];
+
+    handleAdd [label="handleAdd\n(作成処理を束ね、選択に繋げる)"];
+
+    setSelectedId [label="setSelectedId\n(新しいメモ ID をアクティブ化)"];
+
+    setMobilePanel [label="setMobilePanel( 'edit' )\n(狭幅表示のとき編集面へ)"];
+
+  }
+
+  subgraph cluster_persist {
+    label="useMemos（新規1件の追加と永続化）";
+    labelloc=t;
+    fontsize=11;
+    style=filled;
+    fillcolor="#eef6ea";
+    node [style="rounded,filled", fillcolor="#9bbf8a"];
+
+    addMemo [label="addMemo\n(空の Memo を先頭に追加・UUID/時刻付与)"];
+
+    effectMemos [label="useEffect( [ memos ] )\n(配列更新で保存を 150ms デバウンス)"];
+
+    saveToStorage [label="saveToStorage\n(配列を localStorage へJSON保存)"];
+
+  }
+
+  memoList -> handleAdd [label="onAdd", fontsize=10];
+
+  handleAdd -> addMemo [label="新規行の id を取得", fontsize=10];
+
+  handleAdd -> setSelectedId [label="戻り値 id", fontsize=10];
+
+  handleAdd -> setMobilePanel [label="isNarrow のとき", fontsize=10];
+
+  addMemo -> effectMemos [label="setMemos により memos 更新", fontsize=10, style=dashed];
+
+  effectMemos -> saveToStorage [label="タイマー完了後", fontsize=10];
+}
