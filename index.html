@@ -5,6 +5,18 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>メモ</title>
+    <script>
+      ;(function () {
+        try {
+          var k = 'reading-journal:theme'
+          var v = localStorage.getItem(k)
+          var t = v === 'light' || v === 'dark' || v === 'system' ? v : 'system'
+          document.documentElement.setAttribute('data-theme', t)
+        } catch {
+          document.documentElement.setAttribute('data-theme', 'system')
+        }
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>
