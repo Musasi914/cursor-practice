@@ -344,9 +344,25 @@ body {
   margin: 0 0 0.5rem;
   border: 1px solid var(--danger);
   border-radius: var(--radius);
-  background: color-mix(in srgb, var(--danger) 12%, var(--surface));
+  background: #f4e0e4;
   font-size: 0.85rem;
   line-height: 1.45;
+}
+
+html[data-theme='dark'] .reading-banner {
+  background: #35232b;
+}
+
+@media (prefers-color-scheme: dark) {
+  html[data-theme='system'] .reading-banner {
+    background: #35232b;
+  }
+}
+
+@supports (background: color-mix(in srgb, red 12%, blue)) {
+  .reading-banner {
+    background: color-mix(in srgb, var(--danger) 12%, var(--surface));
+  }
 }
 
 .reading-banner__text {
