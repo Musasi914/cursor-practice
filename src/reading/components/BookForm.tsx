@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { Book, BookStatus } from '../types/book'
 import { BOOK_STATUS_LABEL } from '../statusLabels'
+import { ConfirmDialog } from './ConfirmDialog'
 
 type BookFormProps = {
   book: Book | null
@@ -20,6 +21,7 @@ export function BookForm({
   showBackButton,
 }: BookFormProps) {
   const [titleError, setTitleError] = useState(false)
+  const [deleteOpen, setDeleteOpen] = useState(false)
 
   if (!book) {
     return (
@@ -34,10 +36,17 @@ export function BookForm({
   const id = book.id
   const canSave = book.title.trim().length > 0
 
-  const handleDelete = () => {
-    if (window.confirm('この本の記録を削除します。よろしいですか？')) {
-      onDelete(id)
-    }
+  const handleDeleteRequest = () => {
+    setDeleteOpen(true)
+  }
+
+  const handleDeleteConfirm = () => {
+    setDeleteOpen(false)
+    onDelete(id)
+  }
+
+  const handleDeleteCancel = () => {
+    setDeleteOpen(false)
   }
 
   const handleSaveClick = () => {
@@ -64,7 +73,7 @@ export function BookForm({
           <button type="button" className="button button--primary" onClick={handleSaveClick}>
             保存
           </button>
-          <button type="button" className="button button--danger" onClick={handleDelete}>
+          <button type="button" className="button button--danger" onClick={handleDeleteRequest}>
             削除
           </button>
         </div>
@@ -157,6 +166,16 @@ export function BookForm({
         onChange={(e) => onPatch(id, { notes: e.target.value })}
         placeholder="感想やメモを自由に"
         rows={12}
+      />
+      <ConfirmDialog
+        open={deleteOpen}
+        title="本の記録を削除"
+        message="この本の記録を削除します。戻すことはできません。"
+        confirmLabel="削除する"
+        cancelLabel="キャンセル"
+        onConfirm={handleDeleteConfirm}
+        onCancel={handleDeleteCancel}
+        variant="danger"
       />
     </section>
   )
