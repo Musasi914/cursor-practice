@@ -93,13 +93,15 @@ export function loadBooksFromStorage(): LoadBooksResult {
   }
 }
 
-export function saveBooksToStorage(books: Book[]) {
+export function saveBooksToStorage(books: Book[]): boolean {
   try {
     window.localStorage.setItem(READING_BOOKS_STORAGE_KEY, JSON.stringify(books))
+    return true
   } catch {
     console.warn(
       '読書データの保存に失敗しました。ブラウザの保存容量制限等をご確認ください。',
     )
+    return false
   }
 }
 

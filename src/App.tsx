@@ -5,6 +5,10 @@ import { ThemeToggle } from './reading/components/ThemeToggle'
 import { ReadingReminderSettings } from './reading/components/ReadingReminderSettings'
 import { useBooks } from './reading/hooks/useBooks'
 import { filterBooks, type BookFilterValue } from './reading/lib/filterBooks'
+import {
+  sortBooksList,
+  type BookSortOption,
+} from './reading/lib/sortBooks'
 
 const NARROW_MAX = 640
 
@@ -29,18 +33,19 @@ function useNarrowView() {
 }
 
 export default function App() {
-  const { books, loadCorruption, addBook, updateBook, removeBook, clearLoadCorruption } =
+  const { books, loadCorruption, saveError, addBook, updateBook, removeBook, clearLoadCorruption, clearSaveError, retrySave } =
     useBooks()
   const [filter, setFilter] = useState<BookFilterValue>('all')
+  const [sort, setSort] = useState<BookSortOption>('updated-desc')
   const [search, setSearch] = useState('')
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [mobilePanel, setMobilePanel] = useState<MobilePanel>('list')
   const isNarrow = useNarrowView()
 
-  const visibleBooks = useMemo(
-    () => filterBooks(books, filter, search),
-    [books, filter, search],
-  )
+  const visibleBooks = useMemo(() => {
+    const filtered = filterBooks(books, filter, search)
+    return sortBooksList(filtered, sort)
+  }, [books, filter, search, sort])
 
   const selectedBook = useMemo(
     () => (selectedId ? (books.find((b) => b.id === selectedId) ?? null) : null),
@@ -98,6 +103,8 @@ export default function App() {
             visibleBooks={visibleBooks}
             filter={filter}
             onFilterChange={setFilter}
+            sort={sort}
+            onSortChange={setSort}
             search={search}
             onSearchChange={setSearch}
             selectedId={selectedId}
@@ -105,6 +112,9 @@ export default function App() {
             onAdd={handleAdd}
             loadCorruption={loadCorruption}
             onDismissCorruption={clearLoadCorruption}
+            saveError={saveError}
+            onDismissSaveError={clearSaveError}
+            onRetrySave={retrySave}
           />
         ) : null}
         {showEdit ? (
