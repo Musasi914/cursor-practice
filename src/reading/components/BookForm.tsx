@@ -126,22 +126,22 @@ export function BookForm({
         ))}
       </select>
       <div className="reading-form__row-dates">
-        <p className="reading-form__date-field">
+        <div className="reading-form__date-field">
           <BookDateField
             id="book-started"
             label="読み始めた日"
             value={book.startedOn}
             onChange={(next) => onPatch(id, { startedOn: next })}
           />
-        </p>
-        <p className="reading-form__date-field">
+        </div>
+        <div className="reading-form__date-field">
           <BookDateField
             id="book-finished"
             label="読了日"
             value={book.finishedOn}
             onChange={(next) => onPatch(id, { finishedOn: next })}
           />
-        </p>
+        </div>
       </div>
       <label className="reading-form__label" htmlFor="book-notes">
         感想・メモ

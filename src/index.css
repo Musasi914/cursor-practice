@@ -867,6 +867,8 @@ html[data-theme='dark'] .date-picker-dialog::backdrop {
   margin-top: 0.15rem;
   font-size: 0.75rem;
   color: var(--text-muted);
+}
+
 .confirm-dialog {
   padding: 0;
   border: none;
