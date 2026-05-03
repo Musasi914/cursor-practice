@@ -71,16 +71,19 @@ export function BookForm({
         ) : null}
         <div className="reading-form__toolbar-right">
           <button type="button" className="button button--primary" onClick={handleSaveClick}>
-            保存
+            入力チェック
           </button>
           <button type="button" className="button button--danger" onClick={handleDeleteRequest}>
             削除
           </button>
         </div>
       </div>
+      <p className="reading-form__hint">
+        編集内容は入力のたびに自動で端末に保存されます（このボタンは必須入力の確認用です）。
+      </p>
       {titleError ? (
         <p className="reading-form__error" role="alert">
-          タイトルは必須です。入力してから保存してください。
+          タイトルは必須です。入力してから入力チェックを押してください。
         </p>
       ) : null}
       <label className="reading-form__label" htmlFor="book-title">
