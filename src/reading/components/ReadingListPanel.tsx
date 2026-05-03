@@ -121,6 +121,13 @@ export function ReadingListPanel({
         onSearchChange={onSearchChange}
         searchId={searchId}
       />
+      {books.length > 0 ? (
+        <p className="reading-assistive" aria-live="polite" aria-atomic="true">
+          {visibleBooks.length === 0
+            ? '条件に一致する本は 0 件です。'
+            : `${visibleBooks.length} 件を表示しています。`}
+        </p>
+      ) : null}
       {books.length === 0 ? (
         <p className="reading-sidebar__empty">
           まだ本が登録されていません。「新規登録」で紙本・電子籍の記録を始められます。
