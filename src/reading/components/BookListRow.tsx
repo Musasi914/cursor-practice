@@ -50,7 +50,7 @@ export function BookListRow({ book, selected, onSelect, idPrefix }: BookListRowP
             {displayTitle(book.title)}
           </span>
           <span
-            className="reading-list__status"
+            className={`reading-list__status reading-list__status--${book.status}`}
             aria-label={`状態: ${BOOK_STATUS_LABEL[book.status]}`}
           >
             {BOOK_STATUS_LABEL[book.status]}

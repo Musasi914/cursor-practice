@@ -26,6 +26,7 @@ export function useBooks() {
   const [loadCorruption, setLoadCorruption] = useState(
     () => initialLoad.hadCorruption,
   )
+  const [saveError, setSaveError] = useState(false)
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
@@ -41,7 +42,8 @@ export function useBooks() {
       clearTimeout(saveTimerRef.current)
     }
     saveTimerRef.current = setTimeout(() => {
-      saveBooksToStorage(books)
+      const ok = saveBooksToStorage(books)
+      setSaveError(!ok)
       saveTimerRef.current = null
     }, SAVE_DEBOUNCE_MS)
     return () => {
@@ -96,12 +98,23 @@ export function useBooks() {
     setLoadCorruption(false)
   }, [])
 
+  const clearSaveError = useCallback(() => {
+    setSaveError(false)
+  }, [])
+
+  const retrySave = useCallback(() => {
+    setSaveError(!saveBooksToStorage(books))
+  }, [books])
+
   return {
     books,
     loadCorruption,
+    saveError,
     addBook,
     updateBook,
     removeBook,
     clearLoadCorruption,
+    clearSaveError,
+    retrySave,
   }
 }
