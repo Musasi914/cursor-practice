@@ -19,6 +19,9 @@ type ReadingListPanelProps = {
   onAdd: () => void
   loadCorruption: boolean
   onDismissCorruption: () => void
+  saveError: boolean
+  onDismissSaveError: () => void
+  onRetrySave: () => void
 }
 
 export function ReadingListPanel({
@@ -35,6 +38,9 @@ export function ReadingListPanel({
   onAdd,
   loadCorruption,
   onDismissCorruption,
+  saveError,
+  onDismissSaveError,
+  onRetrySave,
 }: ReadingListPanelProps) {
   const searchId = useId()
   const listId = useId()
@@ -104,6 +110,38 @@ export function ReadingListPanel({
           >
             閉じる
           </button>
+        </div>
+      ) : null}
+      {saveError ? (
+        <div className="reading-banner" role="alert">
+          <p className="reading-banner__text">
+            読書データの保存に失敗しました。プライベートブラウズや端末の空き容量、
+            <a
+              className="reading-banner__link"
+              href="https://developer.mozilla.org/ja/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria"
+              target="_blank"
+              rel="noreferrer"
+            >
+              ブラウザの保存クォータ（外部・MDN）
+            </a>
+            を確認してください。
+          </p>
+          <div className="reading-banner__actions">
+            <button
+              type="button"
+              className="button button--ghost reading-banner__action"
+              onClick={onRetrySave}
+            >
+              再試行
+            </button>
+            <button
+              type="button"
+              className="button button--ghost reading-banner__close"
+              onClick={onDismissSaveError}
+            >
+              閉じる
+            </button>
+          </div>
         </div>
       ) : null}
       <div className="reading-sidebar__header">

@@ -32,7 +32,7 @@ function useNarrowView() {
 }
 
 export default function App() {
-  const { books, loadCorruption, addBook, updateBook, removeBook, clearLoadCorruption } =
+  const { books, loadCorruption, saveError, addBook, updateBook, removeBook, clearLoadCorruption, clearSaveError, retrySave } =
     useBooks()
   const [filter, setFilter] = useState<BookFilterValue>('all')
   const [sort, setSort] = useState<BookSortOption>('updated-desc')
@@ -110,6 +110,9 @@ export default function App() {
             onAdd={handleAdd}
             loadCorruption={loadCorruption}
             onDismissCorruption={clearLoadCorruption}
+            saveError={saveError}
+            onDismissSaveError={clearSaveError}
+            onRetrySave={retrySave}
           />
         ) : null}
         {showEdit ? (

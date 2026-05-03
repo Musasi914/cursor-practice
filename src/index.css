@@ -330,6 +330,28 @@ html[data-theme='dark'] .reading-banner {
   min-width: 0;
 }
 
+.reading-banner__link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.reading-banner__link:hover {
+  text-decoration-thickness: 2px;
+}
+
+.reading-banner__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.reading-banner__action {
+  flex-shrink: 0;
+}
+
 .reading-banner__close {
   flex-shrink: 0;
 }
