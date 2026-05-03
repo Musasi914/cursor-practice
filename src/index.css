@@ -620,6 +620,89 @@ html[data-theme='dark'] .reading-banner {
   gap: 0.2rem;
 }
 
+.reading-form__date-field-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.reading-form__date-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.reading-form__input--date {
+  flex: 1;
+  min-width: 0;
+}
+
+.reading-form__calendar-trigger {
+  flex-shrink: 0;
+  font-size: 0.85rem;
+}
+
+.date-picker-dialog {
+  padding: 0;
+  border: none;
+  max-width: calc(100vw - 1.5rem);
+  background: transparent;
+}
+
+.date-picker-dialog::backdrop {
+  background: rgba(20, 17, 24, 0.45);
+}
+
+html[data-theme='dark'] .date-picker-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.55);
+}
+
+@media (prefers-color-scheme: dark) {
+  html[data-theme='system'] .date-picker-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.55);
+  }
+}
+
+.date-picker-dialog__panel {
+  padding: 1rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.date-picker-dialog__title {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+  color: var(--text-heading);
+}
+
+.date-picker-dialog__footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--border);
+}
+
+.rdp-reading {
+  --rdp-accent-color: var(--accent);
+  --rdp-outside-opacity: 0.55;
+  margin: 0;
+}
+
+.rdp-reading .rdp-day_button {
+  border-radius: 6px;
+}
+
+.rdp-reading__caption {
+  color: var(--text-heading);
+  font-weight: 600;
+}
+
 .reading-form__body {
   resize: vertical;
   min-height: 10rem;

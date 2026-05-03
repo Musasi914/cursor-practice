@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { Book, BookStatus } from '../types/book'
 import { BOOK_STATUS_LABEL } from '../statusLabels'
+import { BookDateField } from './BookDateField'
 
 type BookFormProps = {
   book: Book | null
@@ -114,35 +115,19 @@ export function BookForm({
       </select>
       <div className="reading-form__row-dates">
         <p className="reading-form__date-field">
-          <label className="reading-form__label" htmlFor="book-started">
-            読み始めた日
-          </label>
-          <input
+          <BookDateField
             id="book-started"
-            className="reading-form__input"
-            type="date"
-            name="startedOn"
-            value={book.startedOn ?? ''}
-            onChange={(e) => {
-              const v = e.target.value
-              onPatch(id, { startedOn: v === '' ? null : v })
-            }}
+            label="読み始めた日"
+            value={book.startedOn}
+            onChange={(next) => onPatch(id, { startedOn: next })}
           />
         </p>
         <p className="reading-form__date-field">
-          <label className="reading-form__label" htmlFor="book-finished">
-            読了日
-          </label>
-          <input
+          <BookDateField
             id="book-finished"
-            className="reading-form__input"
-            type="date"
-            name="finishedOn"
-            value={book.finishedOn ?? ''}
-            onChange={(e) => {
-              const v = e.target.value
-              onPatch(id, { finishedOn: v === '' ? null : v })
-            }}
+            label="読了日"
+            value={book.finishedOn}
+            onChange={(next) => onPatch(id, { finishedOn: next })}
           />
         </p>
       </div>
