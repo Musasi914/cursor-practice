@@ -831,6 +831,9 @@ html[data-theme='dark'] .date-picker-dialog::backdrop {
 }
 
 html[data-theme='dark'] .reminder-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.55);
+}
+
 .reading-suggestions {
   margin: 0;
   padding: 0.65rem 1rem 1rem;
@@ -903,6 +906,9 @@ html[data-theme='dark'] .confirm-dialog::backdrop {
 
 @media (prefers-color-scheme: dark) {
   html[data-theme='system'] .reminder-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.55);
+  }
+
   html[data-theme='system'] .confirm-dialog::backdrop {
     background: rgba(0, 0, 0, 0.55);
   }
@@ -910,10 +916,6 @@ html[data-theme='dark'] .confirm-dialog::backdrop {
 
 .reminder-dialog__panel {
   padding: 1rem 1.15rem;
- }
-  
-.confirm-dialog__panel {
-  padding: 1.15rem 1.25rem;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -921,8 +923,19 @@ html[data-theme='dark'] .confirm-dialog::backdrop {
   max-width: 22rem;
 }
 
-.reminder-dialog__title {
+.confirm-dialog__panel {
+  padding: 1.15rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
   min-width: min(18rem, calc(100vw - 2rem));
+}
+
+.reminder-dialog__title {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  color: var(--text-heading);
 }
 
 .confirm-dialog__title {
@@ -984,8 +997,8 @@ html[data-theme='dark'] .confirm-dialog::backdrop {
 .reminder-dialog__footer {
   display: flex;
   justify-content: flex-end;
- }
-  
+}
+
 .confirm-dialog__message {
   margin: 0 0 1rem;
   color: var(--text);
