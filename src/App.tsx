@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { BookForm } from './reading/components/BookForm'
 import { ReadingListPanel } from './reading/components/ReadingListPanel'
 import { ThemeToggle } from './reading/components/ThemeToggle'
+import { ReadingReminderSettings } from './reading/components/ReadingReminderSettings'
 import { useBooks } from './reading/hooks/useBooks'
 import { filterBooks, type BookFilterValue } from './reading/lib/filterBooks'
 
@@ -81,6 +82,7 @@ export default function App() {
   return (
     <div className="app">
       <div className="app__topbar">
+        <ReadingReminderSettings />
         <ThemeToggle />
       </div>
       <div
