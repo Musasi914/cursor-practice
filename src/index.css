@@ -814,6 +814,59 @@ html[data-theme='dark'] .date-picker-dialog::backdrop {
   font-size: 0.95rem;
 }
 
+.reading-suggestions {
+  margin: 0;
+  padding: 0.65rem 1rem 1rem;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.reading-suggestions__title {
+  margin: 0 0 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-heading);
+}
+
+.reading-suggestions__disclaimer {
+  margin: 0 0 0.5rem;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+.reading-suggestions__status {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.reading-suggestions__list {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.reading-suggestions__item {
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: var(--text);
+}
+
+.reading-suggestions__book-title {
+  display: block;
+  font-weight: 600;
+  color: var(--text-heading);
+}
+
+.reading-suggestions__reason {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
 .confirm-dialog {
   padding: 0;
   border: none;
