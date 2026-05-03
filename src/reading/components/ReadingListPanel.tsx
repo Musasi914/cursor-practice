@@ -3,6 +3,7 @@ import type { Book } from '../types/book'
 import type { BookFilterValue } from '../lib/filterBooks'
 import { BookFilterBar } from './BookFilterBar'
 import { BookListRow } from './BookListRow'
+import { BookSuggestionsPanel } from './BookSuggestionsPanel'
 
 type ReadingListPanelProps = {
   books: Book[]
@@ -84,6 +85,7 @@ export function ReadingListPanel({
           ))}
         </ul>
       )}
+      <BookSuggestionsPanel books={books} />
     </aside>
   )
 }
