@@ -1,4 +1,4 @@
-import { useId } from 'react'
+import { useCallback, useId, useRef, type KeyboardEvent } from 'react'
 import type { Book } from '../types/book'
 import type { BookFilterValue } from '../lib/filterBooks'
 import type { BookSortOption } from '../lib/sortBooks'
@@ -38,6 +38,57 @@ export function ReadingListPanel({
 }: ReadingListPanelProps) {
   const searchId = useId()
   const listId = useId()
+  const listRef = useRef<HTMLUListElement>(null)
+
+  const handleListKeyDownCapture = useCallback(
+    (e: KeyboardEvent<HTMLUListElement>) => {
+      const target = e.target
+      if (!(target instanceof HTMLButtonElement)) {
+        return
+      }
+      if (!target.classList.contains('reading-list__button')) {
+        return
+      }
+      const root = listRef.current
+      if (!root) {
+        return
+      }
+      const buttons = [
+        ...root.querySelectorAll<HTMLButtonElement>('.reading-list__button'),
+      ]
+      const idx = buttons.indexOf(target)
+      if (idx < 0) {
+        return
+      }
+
+      const moveFocus = (nextIndex: number) => {
+        const i = Math.max(0, Math.min(nextIndex, buttons.length - 1))
+        buttons[i]?.focus()
+      }
+
+      switch (e.key) {
+        case 'ArrowDown':
+          e.preventDefault()
+          moveFocus(idx + 1)
+          break
+        case 'ArrowUp':
+          e.preventDefault()
+          moveFocus(idx - 1)
+          break
+        case 'Home':
+          e.preventDefault()
+          moveFocus(0)
+          break
+        case 'End':
+          e.preventDefault()
+          moveFocus(buttons.length - 1)
+          break
+        default:
+          break
+      }
+    },
+    [],
+  )
 
   return (
     <aside className="reading-sidebar" aria-label="読書の一覧">
@@ -79,7 +130,13 @@ export function ReadingListPanel({
           条件に一致する本がありません。フィルタやタイトル検索を変えてみてください。
         </p>
       ) : (
-        <ul className="reading-list" role="list" aria-label="登録した本">
+        <ul
+          ref={listRef}
+          className="reading-list"
+          role="list"
+          aria-label="登録した本"
+          onKeyDownCapture={handleListKeyDownCapture}
+        >
           {visibleBooks.map((b) => (
             <BookListRow
               key={b.id}
