@@ -11,6 +11,15 @@
   --danger-hover: #a8222f;
   --item-hover: #f0ecf5;
   --item-active: #e8e0f5;
+  --status-unread-bg: #ebe7f0;
+  --status-unread-fg: #3f3648;
+  --status-unread-border: #c9c0d8;
+  --status-reading-bg: #ebe4ff;
+  --status-reading-fg: #4a2d9e;
+  --status-reading-border: #c4b0f0;
+  --status-finished-bg: #e2f4ec;
+  --status-finished-fg: #1a5a42;
+  --status-finished-border: #9fd4bc;
   --shadow: 0 1px 2px rgba(20, 17, 24, 0.06);
   --radius: 10px;
   --sans: system-ui, 'Segoe UI', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
@@ -36,6 +45,15 @@ html[data-theme='dark'] {
   --danger-hover: #f5a0a5;
   --item-hover: #25212c;
   --item-active: #302a3d;
+  --status-unread-bg: #2c2835;
+  --status-unread-fg: #d8d2e2;
+  --status-unread-border: #4a4358;
+  --status-reading-bg: #352a4d;
+  --status-reading-fg: #d4c4ff;
+  --status-reading-border: #6b52a8;
+  --status-finished-bg: #1e3d32;
+  --status-finished-fg: #a8e8cc;
+  --status-finished-border: #3d8f6a;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
 }
 
@@ -53,6 +71,15 @@ html[data-theme='dark'] {
     --danger-hover: #f5a0a5;
     --item-hover: #25212c;
     --item-active: #302a3d;
+    --status-unread-bg: #2c2835;
+    --status-unread-fg: #d8d2e2;
+    --status-unread-border: #4a4358;
+    --status-reading-bg: #352a4d;
+    --status-reading-fg: #d4c4ff;
+    --status-reading-border: #6b52a8;
+    --status-finished-bg: #1e3d32;
+    --status-finished-fg: #a8e8cc;
+    --status-finished-border: #3d8f6a;
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
   }
 }
@@ -303,6 +330,28 @@ html[data-theme='dark'] .reading-banner {
   min-width: 0;
 }
 
+.reading-banner__link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.reading-banner__link:hover {
+  text-decoration-thickness: 2px;
+}
+
+.reading-banner__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.reading-banner__action {
+  flex-shrink: 0;
+}
+
 .reading-banner__close {
   flex-shrink: 0;
 }
@@ -409,6 +458,37 @@ html[data-theme='dark'] .reading-banner {
   color: var(--text-heading);
 }
 
+.reading-sort {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.reading-sort__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.reading-sort__select {
+  width: 100%;
+  font: inherit;
+  color: var(--text-heading);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 0.45rem 0.65rem;
+}
+
+.reading-sort__select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: var(--accent);
+}
+
 .reading-search__wrap {
   margin: 0;
   display: flex;
@@ -505,8 +585,25 @@ html[data-theme='dark'] .reading-banner {
   font-weight: 600;
   padding: 0.1rem 0.35rem;
   border-radius: 4px;
-  border: 1px solid var(--border);
-  color: var(--text-muted);
+  border: 1px solid transparent;
+}
+
+.reading-list__status--unread {
+  background: var(--status-unread-bg);
+  color: var(--status-unread-fg);
+  border-color: var(--status-unread-border);
+}
+
+.reading-list__status--reading {
+  background: var(--status-reading-bg);
+  color: var(--status-reading-fg);
+  border-color: var(--status-reading-border);
+}
+
+.reading-list__status--finished {
+  background: var(--status-finished-bg);
+  color: var(--status-finished-fg);
+  border-color: var(--status-finished-border);
 }
 
 .reading-list__dates {
@@ -573,6 +670,13 @@ html[data-theme='dark'] .reading-banner {
   font-size: 0.9rem;
 }
 
+.reading-form__hint {
+  margin: 0 0 0.25rem;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
 .reading-form__label {
   font-size: 0.75rem;
   font-weight: 600;
@@ -618,6 +722,89 @@ html[data-theme='dark'] .reading-banner {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+}
+
+.reading-form__date-field-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.reading-form__date-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.reading-form__input--date {
+  flex: 1;
+  min-width: 0;
+}
+
+.reading-form__calendar-trigger {
+  flex-shrink: 0;
+  font-size: 0.85rem;
+}
+
+.date-picker-dialog {
+  padding: 0;
+  border: none;
+  max-width: calc(100vw - 1.5rem);
+  background: transparent;
+}
+
+.date-picker-dialog::backdrop {
+  background: rgba(20, 17, 24, 0.45);
+}
+
+html[data-theme='dark'] .date-picker-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.55);
+}
+
+@media (prefers-color-scheme: dark) {
+  html[data-theme='system'] .date-picker-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.55);
+  }
+}
+
+.date-picker-dialog__panel {
+  padding: 1rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.date-picker-dialog__title {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+  color: var(--text-heading);
+}
+
+.date-picker-dialog__footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--border);
+}
+
+.rdp-reading {
+  --rdp-accent-color: var(--accent);
+  --rdp-outside-opacity: 0.55;
+  margin: 0;
+}
+
+.rdp-reading .rdp-day_button {
+  border-radius: 6px;
+}
+
+.rdp-reading__caption {
+  color: var(--text-heading);
+  font-weight: 600;
 }
 
 .reading-form__body {
@@ -680,4 +867,52 @@ html[data-theme='dark'] .reading-banner {
   margin-top: 0.15rem;
   font-size: 0.75rem;
   color: var(--text-muted);
+.confirm-dialog {
+  padding: 0;
+  border: none;
+  max-width: calc(100vw - 2rem);
+  background: transparent;
+}
+
+.confirm-dialog::backdrop {
+  background: rgba(20, 17, 24, 0.45);
+}
+
+html[data-theme='dark'] .confirm-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.55);
+}
+
+@media (prefers-color-scheme: dark) {
+  html[data-theme='system'] .confirm-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.55);
+  }
+}
+
+.confirm-dialog__panel {
+  padding: 1.15rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  min-width: min(18rem, calc(100vw - 2rem));
+}
+
+.confirm-dialog__title {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  color: var(--text-heading);
+}
+
+.confirm-dialog__message {
+  margin: 0 0 1rem;
+  color: var(--text);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.confirm-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
 }

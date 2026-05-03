@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import type { Book, BookStatus } from '../types/book'
 import { BOOK_STATUS_LABEL } from '../statusLabels'
+import { BookDateField } from './BookDateField'
+import { ConfirmDialog } from './ConfirmDialog'
 
 type BookFormProps = {
   book: Book | null
@@ -20,6 +22,7 @@ export function BookForm({
   showBackButton,
 }: BookFormProps) {
   const [titleError, setTitleError] = useState(false)
+  const [deleteOpen, setDeleteOpen] = useState(false)
 
   if (!book) {
     return (
@@ -34,10 +37,17 @@ export function BookForm({
   const id = book.id
   const canSave = book.title.trim().length > 0
 
-  const handleDelete = () => {
-    if (window.confirm('この本の記録を削除します。よろしいですか？')) {
-      onDelete(id)
-    }
+  const handleDeleteRequest = () => {
+    setDeleteOpen(true)
+  }
+
+  const handleDeleteConfirm = () => {
+    setDeleteOpen(false)
+    onDelete(id)
+  }
+
+  const handleDeleteCancel = () => {
+    setDeleteOpen(false)
   }
 
   const handleSaveClick = () => {
@@ -62,16 +72,19 @@ export function BookForm({
         ) : null}
         <div className="reading-form__toolbar-right">
           <button type="button" className="button button--primary" onClick={handleSaveClick}>
-            保存
+            入力チェック
           </button>
-          <button type="button" className="button button--danger" onClick={handleDelete}>
+          <button type="button" className="button button--danger" onClick={handleDeleteRequest}>
             削除
           </button>
         </div>
       </div>
+      <p className="reading-form__hint">
+        編集内容は入力のたびに自動で端末に保存されます（このボタンは必須入力の確認用です）。
+      </p>
       {titleError ? (
         <p className="reading-form__error" role="alert">
-          タイトルは必須です。入力してから保存してください。
+          タイトルは必須です。入力してから入力チェックを押してください。
         </p>
       ) : null}
       <label className="reading-form__label" htmlFor="book-title">
@@ -114,35 +127,19 @@ export function BookForm({
       </select>
       <div className="reading-form__row-dates">
         <p className="reading-form__date-field">
-          <label className="reading-form__label" htmlFor="book-started">
-            読み始めた日
-          </label>
-          <input
+          <BookDateField
             id="book-started"
-            className="reading-form__input"
-            type="date"
-            name="startedOn"
-            value={book.startedOn ?? ''}
-            onChange={(e) => {
-              const v = e.target.value
-              onPatch(id, { startedOn: v === '' ? null : v })
-            }}
+            label="読み始めた日"
+            value={book.startedOn}
+            onChange={(next) => onPatch(id, { startedOn: next })}
           />
         </p>
         <p className="reading-form__date-field">
-          <label className="reading-form__label" htmlFor="book-finished">
-            読了日
-          </label>
-          <input
+          <BookDateField
             id="book-finished"
-            className="reading-form__input"
-            type="date"
-            name="finishedOn"
-            value={book.finishedOn ?? ''}
-            onChange={(e) => {
-              const v = e.target.value
-              onPatch(id, { finishedOn: v === '' ? null : v })
-            }}
+            label="読了日"
+            value={book.finishedOn}
+            onChange={(next) => onPatch(id, { finishedOn: next })}
           />
         </p>
       </div>
@@ -157,6 +154,16 @@ export function BookForm({
         onChange={(e) => onPatch(id, { notes: e.target.value })}
         placeholder="感想やメモを自由に"
         rows={12}
+      />
+      <ConfirmDialog
+        open={deleteOpen}
+        title="本の記録を削除"
+        message="この本の記録を削除します。戻すことはできません。"
+        confirmLabel="削除する"
+        cancelLabel="キャンセル"
+        onConfirm={handleDeleteConfirm}
+        onCancel={handleDeleteCancel}
+        variant="danger"
       />
     </section>
   )
