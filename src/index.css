@@ -409,6 +409,37 @@ html[data-theme='dark'] .reading-banner {
   color: var(--text-heading);
 }
 
+.reading-sort {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.reading-sort__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.reading-sort__select {
+  width: 100%;
+  font: inherit;
+  color: var(--text-heading);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 0.45rem 0.65rem;
+}
+
+.reading-sort__select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: var(--accent);
+}
+
 .reading-search__wrap {
   margin: 0;
   display: flex;

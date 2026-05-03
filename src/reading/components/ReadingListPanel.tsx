@@ -1,6 +1,7 @@
 import { useId } from 'react'
 import type { Book } from '../types/book'
 import type { BookFilterValue } from '../lib/filterBooks'
+import type { BookSortOption } from '../lib/sortBooks'
 import { BookFilterBar } from './BookFilterBar'
 import { BookListRow } from './BookListRow'
 
@@ -9,6 +10,8 @@ type ReadingListPanelProps = {
   visibleBooks: Book[]
   filter: BookFilterValue
   onFilterChange: (v: BookFilterValue) => void
+  sort: BookSortOption
+  onSortChange: (v: BookSortOption) => void
   search: string
   onSearchChange: (v: string) => void
   selectedId: string | null
@@ -23,6 +26,8 @@ export function ReadingListPanel({
   visibleBooks,
   filter,
   onFilterChange,
+  sort,
+  onSortChange,
   search,
   onSearchChange,
   selectedId,
@@ -59,6 +64,8 @@ export function ReadingListPanel({
       <BookFilterBar
         filter={filter}
         onFilterChange={onFilterChange}
+        sort={sort}
+        onSortChange={onSortChange}
         search={search}
         onSearchChange={onSearchChange}
         searchId={searchId}
