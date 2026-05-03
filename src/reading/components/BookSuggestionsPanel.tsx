@@ -19,20 +19,29 @@ export function BookSuggestionsPanel({ books }: BookSuggestionsPanelProps) {
     if (!hasFinished) {
       return
     }
+
     let cancelled = false
     const t = window.setTimeout(() => {
       setLoading(true)
-      void fetchFinishedBookSuggestions(books, 5).then((suggestions) => {
-        if (cancelled) {
-          return
-        }
-        setLoading(false)
-        setItems(suggestions)
-      })
+      void fetchFinishedBookSuggestions(books, 5)
+        .then((suggestions) => {
+          if (cancelled) {
+            return
+          }
+          setItems(suggestions)
+        })
+        .finally(() => {
+          if (!cancelled) {
+            setLoading(false)
+          }
+        })
     }, 400)
+
     return () => {
       cancelled = true
       window.clearTimeout(t)
+      setLoading(false)
+      setItems([])
     }
   }, [books, hasFinished])
 
