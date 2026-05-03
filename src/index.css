@@ -156,6 +156,11 @@ body {
   border-color: var(--danger-hover);
 }
 
+.button--danger:focus-visible {
+  outline: 2px solid var(--danger);
+  outline-offset: 2px;
+}
+
 .button--ghost {
   color: var(--text);
   background: transparent;
@@ -166,6 +171,78 @@ body {
 
 .button--ghost:hover {
   background: var(--item-hover);
+}
+
+.button--ghost:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Editor */
+.memo-editor {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0.9rem 1.1rem 1.1rem;
+  gap: 0.35rem;
+}
+
+.app__main--stack-narrow .memo-editor {
+  min-height: min(60dvh, 520px);
+  flex: 1;
+}
+
+.memo-editor__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.memo-editor__placeholder {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.6;
+  align-self: center;
+  text-align: center;
+  max-width: 24rem;
+  padding: 2rem 1rem;
+}
+
+.memo-editor__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+
+.memo-editor__input,
+.memo-editor__body {
+  width: 100%;
+  font: inherit;
+  color: var(--text-heading);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 0.55rem 0.7rem;
+}
+
+.memo-editor__input:focus,
+.memo-editor__body:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: var(--accent);
+}
+
+.memo-editor__body {
+  resize: vertical;
+  min-height: 10rem;
+  line-height: 1.45;
+  font-size: 0.95rem;
 }
 
 /* 読書記録 */
